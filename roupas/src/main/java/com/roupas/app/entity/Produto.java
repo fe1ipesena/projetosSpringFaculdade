@@ -28,6 +28,6 @@ public class Produto {
     @NotNull(message = "O produto precisa ter um valor!")
     private BigDecimal value;
 
-    @ManyToMany
+    @ManyToOne
     private Venda venda;
 }
