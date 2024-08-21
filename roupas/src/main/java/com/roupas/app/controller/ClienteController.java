@@ -20,9 +20,9 @@ public class ClienteController {
     public ResponseEntity<String> save(@RequestBody Cliente cliente){
         try {
             String msg = this.clienteService.save(cliente);
-            return new ResponseEntity<String>(msg, HttpStatus.OK);
+            return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>("Erro ao salvar cliente", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao salvar cliente", HttpStatus.BAD_REQUEST);
         }
     }
 
