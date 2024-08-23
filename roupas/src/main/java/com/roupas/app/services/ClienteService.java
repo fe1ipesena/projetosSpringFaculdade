@@ -21,13 +21,21 @@ public class ClienteService {
     }
 
     public List<Cliente> findall(){
-        return clienteRepository.findAll();
-
+        List<Cliente> clientes = clienteRepository.findAll();
+        if(clientes.isEmpty()){
+            throw new RuntimeException("Não há clientes registrados!");
+        }else{
+            return clientes;
+        }
     }
 
     public Cliente findById(long id){
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        return cliente.get();
+        if(clienteRepository.existsById(id)){
+            Optional<Cliente> cliente = clienteRepository.findById(id);
+            return cliente.get();
+        }else{
+            throw new RuntimeException("Cliente nao encontrado com id "+id);
+        }
     }
 
     public void deleteById(long id){

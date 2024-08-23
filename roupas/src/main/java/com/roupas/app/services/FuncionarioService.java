@@ -21,13 +21,21 @@ public class FuncionarioService {
     }
 
     public List<Funcionario> findall(){
-        return funcionarioRepository.findAll();
-
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+        if(funcionarios.isEmpty()){
+            throw new RuntimeException("Não há funcionários registrados!");
+        }else{
+            return funcionarios;
+        }
     }
 
     public Funcionario findById(long id){
-        Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
-        return funcionario.get();
+        if(funcionarioRepository.existsById(id)){
+            Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
+            return funcionario.get();
+        }else{
+            throw new RuntimeException("Funcionario nao encontrado com id "+id);
+        }
     }
 
     public void deleteById(long id){
@@ -40,13 +48,13 @@ public class FuncionarioService {
 
     public Funcionario updateById(long id, Funcionario updatedFuncionario){
                 return funcionarioRepository.findById(id)
-                .map(cliente -> {
-                    cliente.setName(updatedFuncionario.getName());
-                    cliente.setAge(updatedFuncionario.getAge());
-                    cliente.setRegistration(updatedFuncionario.getRegistration());
-                    cliente.setVenda(updatedFuncionario.getVenda());
+                .map(funcionario -> {
+                    funcionario.setName(updatedFuncionario.getName());
+                    funcionario.setAge(updatedFuncionario.getAge());
+                    funcionario.setRegistration(updatedFuncionario.getRegistration());
+                    funcionario.setVenda(updatedFuncionario.getVenda());
 
-                    return funcionarioRepository.save(cliente);
+                    return funcionarioRepository.save(funcionario);
                 })
                 .orElseThrow(()-> new RuntimeException("Funcionario não encontrado com id: " + id));
     }

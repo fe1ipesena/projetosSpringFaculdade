@@ -1,7 +1,7 @@
 package com.roupas.app.controller;
 
-import com.roupas.app.entity.Cliente;
-import com.roupas.app.services.ClienteService;
+import com.roupas.app.entity.Produto;
+import com.roupas.app.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,37 +10,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clientes")
-public class ClienteController {
+@RequestMapping("/produto")
+public class ProdutoController {
 
     @Autowired
-    private ClienteService clienteService;
+    private ProdutoService produtoService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Cliente cliente){
+    public ResponseEntity<String> save(@RequestBody Produto produto){
         try {
-            String msg = this.clienteService.save(cliente);
+            String msg = this.produtoService.save(produto);
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao salvar cliente "+ e, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao salvar produto: "+ e, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/findbyid/{id}")
     public ResponseEntity<Object> findById(@PathVariable long id){
         try {
-            Cliente cliente = clienteService.findById(id);
-            return ResponseEntity.ok(cliente);
+            Produto produto = produtoService.findById(id);
+            return ResponseEntity.ok(produto);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<?> findall(){
+    public ResponseEntity<?> findAll() {
         try {
-            List<Cliente> clientes = clienteService.findall();
-            return ResponseEntity.ok(clientes);
+            List<Produto> funcionarios = produtoService.findall();
+            return ResponseEntity.ok(funcionarios);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -49,19 +49,19 @@ public class ClienteController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id")long id){
         try {
-            clienteService.deleteById(id);
-            return new ResponseEntity<>("Cliente deletado com sucesso.", HttpStatus.OK);
+            produtoService.deleteById(id);
+            return new ResponseEntity<>("Produto deletado com sucesso.", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    //usado o responseentity como object porque da para retornar tanto msg de erro quanto a entity cliente
+    //usado o responseentity como object porque da para retornar tanto msg de erro quanto a entity funcionario
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateById(@PathVariable("id") long id, @RequestBody Cliente updatedCliente) {
+    public ResponseEntity<Object> updateById(@PathVariable("id") long id, @RequestBody Produto updatedProduto) {
         try {
-            Cliente cliente = clienteService.updateById(id, updatedCliente);
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
+            Produto produto = produtoService.updateById(id, updatedProduto);
+            return new ResponseEntity<>(produto, HttpStatus.OK);
         } catch (Exception e) {
             // mensagem de erro e o status de BAD_REQUEST
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -69,5 +69,3 @@ public class ClienteController {
     }
 
 }
-
-

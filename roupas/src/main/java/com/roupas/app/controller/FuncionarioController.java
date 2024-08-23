@@ -22,7 +22,7 @@ public class FuncionarioController {
             String msg = this.funcionarioService.save(funcionario);
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao salvar funcionario", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao salvar funcionario: "+ e, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -32,18 +32,17 @@ public class FuncionarioController {
             Funcionario funcionario = funcionarioService.findById(id);
             return ResponseEntity.ok(funcionario);
         } catch (Exception e) {
-            return new ResponseEntity<>("Funcionario com id "+id+" nao encontrado.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<List<Funcionario>> findall(){
+    public ResponseEntity<?> findAll() {
         try {
             List<Funcionario> funcionarios = funcionarioService.findall();
             return ResponseEntity.ok(funcionarios);
-        } catch (Exception e) {
-            e.printStackTrace(); //linha para logar o erro no console dessa bomba
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -53,7 +52,7 @@ public class FuncionarioController {
             funcionarioService.deleteById(id);
             return new ResponseEntity<>("Funcionario deletado com sucesso.", HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>("Funcionario com id "+id+" nao encontrado!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,11 +63,8 @@ public class FuncionarioController {
             Funcionario funcionario = funcionarioService.updateById(id, updatedFuncionario);
             return new ResponseEntity<>(funcionario, HttpStatus.OK);
         } catch (Exception e) {
-            // mensagem de erro personalizada lkkkk
-            String errorMessage = e.getMessage();
-
             // mensagem de erro e o status de BAD_REQUEST
-            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
