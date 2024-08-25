@@ -43,13 +43,26 @@ public class ClienteService {
         }
     }
 
+    //metodos de filtro automaticos
+    public List<Cliente> findByName(String name) {
+        return clienteRepository.findByName(name);
+    }
+
+    public List<Cliente> findByCpf(String cpf) {
+        return clienteRepository.findByCpf(cpf);
+    }
+
+    public List<Cliente> findByAge(int age) {
+        return clienteRepository.findByAge(age);
+    }
+
     public void deleteById(long id){
         // verifica se o cliente existe
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id " + id));
 
-        // removendo todas as vendas associadas ao cliente
-        List<Venda> vendas = vendaRepository.findByCliente(cliente);
+        // removendo todas as sales associadas ao cliente
+        List<Venda> vendas = vendaRepository.findByCustomer(cliente);
         if (!vendas.isEmpty()) {
             vendaRepository.deleteAll(vendas);
         }

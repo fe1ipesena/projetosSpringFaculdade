@@ -33,26 +33,23 @@ public class Venda {
     private BigDecimal totalValue;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "customer_id")
     @NotNull(message = "O cliente não pode ser nulo.")
-    @JsonManagedReference
-    //@JsonIgnoreProperties("compras")
-    private Cliente cliente;
+    @JsonIgnoreProperties("purchases")
+    private Cliente customer;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "funcionario_id")
+    @JoinColumn(name = "employee_id")
     @NotNull(message = "O funcionário não pode ser nulo.")
-    //@JsonIgnoreProperties("vendas")
-    @JsonManagedReference
-    private Funcionario funcionario;
+    @JsonIgnoreProperties("sales")
+    private Funcionario employee;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
-            name = "venda_produto",
-            joinColumns = @JoinColumn(name = "venda_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id")
+            name = "sale_product",
+            joinColumns = @JoinColumn(name = "sale_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    //@JsonIgnoreProperties("vendas")
-    @JsonManagedReference
-    private List<Produto> produtos;
+    @JsonIgnoreProperties("sales")
+    private List<Produto> products;
 }

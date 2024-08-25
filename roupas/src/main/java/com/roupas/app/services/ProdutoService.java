@@ -6,6 +6,7 @@ import com.roupas.app.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,19 @@ public class ProdutoService {
         }else{
             throw new RuntimeException("Produto nao encontrado com id "+id);
         }
+    }
+
+    //metodos de filtro automatico
+    public List<Produto> findByProduct(String product) {
+        return produtoRepository.findByProduct(product);
+    }
+
+    public List<Produto> findByValueBetween(BigDecimal minValue, BigDecimal maxValue) {
+        return produtoRepository.findByValueBetween(minValue, maxValue);
+    }
+
+    public List<Produto> findByValueGreaterThan(BigDecimal value) {
+        return produtoRepository.findByValueGreaterThan(value);
     }
 
     public void deleteById(long id){

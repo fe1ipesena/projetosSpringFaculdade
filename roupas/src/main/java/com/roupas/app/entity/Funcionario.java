@@ -39,8 +39,8 @@ public class Funcionario {
     @Column(unique = true) // funciona como uma 2 garantia para ser unico
     private String registration;
 
-    @OneToMany(mappedBy = "funcionario")
-    @JsonBackReference
-    private List<Venda> vendas;
+    @OneToMany(mappedBy = "employee")
+    @JsonIgnore
+    private List<Venda> sales;
 
 }

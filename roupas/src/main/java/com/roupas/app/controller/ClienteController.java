@@ -36,6 +36,22 @@ public class ClienteController {
         }
     }
 
+    // Endpoints de filtro
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Cliente>> findByName(@PathVariable String name) {
+        return ResponseEntity.ok(clienteService.findByName(name));
+    }
+
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<List<Cliente>> findByCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(clienteService.findByCpf(cpf));
+    }
+
+    @GetMapping("/age/{age}")
+    public ResponseEntity<List<Cliente>> findByAge(@PathVariable int age) {
+        return ResponseEntity.ok(clienteService.findByAge(age));
+    }
+
     @GetMapping("/findall")
     public ResponseEntity<?> findall(){
         try {

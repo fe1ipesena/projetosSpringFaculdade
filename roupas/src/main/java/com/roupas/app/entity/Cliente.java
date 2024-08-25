@@ -46,8 +46,8 @@ public class Cliente {
     @NotBlank(message = "É preciso apresentar um telefone")
     private String phone;
 
-    @OneToMany(mappedBy = "cliente")
-    @JsonBackReference
-    private List<Venda> compras;
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    private List<Venda> purchases;
 
 }

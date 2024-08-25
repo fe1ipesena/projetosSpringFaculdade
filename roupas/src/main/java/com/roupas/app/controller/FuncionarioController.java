@@ -36,6 +36,22 @@ public class FuncionarioController {
         }
     }
 
+    // Endpoints de filtro
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Funcionario>> findByName(@PathVariable String name) {
+        return ResponseEntity.ok(funcionarioService.findByName(name));
+    }
+
+    @GetMapping("/registration/{registration}")
+    public ResponseEntity<List<Funcionario>> findByRegistration(@PathVariable String registration) {
+        return ResponseEntity.ok(funcionarioService.findByRegistration(registration));
+    }
+
+    @GetMapping("/age/greater-than/{age}")
+    public ResponseEntity<List<Funcionario>> findByAgeGreaterThanEqual(@PathVariable int age) {
+        return ResponseEntity.ok(funcionarioService.findByAgeGreaterThanEqual(age));
+    }
+
     @GetMapping("/findall")
     public ResponseEntity<?> findAll() {
         try {

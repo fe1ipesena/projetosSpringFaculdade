@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,22 @@ public class ProdutoController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    // Endpoints de filtro
+    @GetMapping("/product/{product}")
+    public ResponseEntity<List<Produto>> findByProduct(@PathVariable String product) {
+        return ResponseEntity.ok(produtoService.findByProduct(product));
+    }
+
+    @GetMapping("/value/between")
+    public ResponseEntity<List<Produto>> findByValueBetween(@RequestParam BigDecimal minValue, @RequestParam BigDecimal maxValue) {
+        return ResponseEntity.ok(produtoService.findByValueBetween(minValue, maxValue));
+    }
+
+    @GetMapping("/value/greater-than/{value}")
+    public ResponseEntity<List<Produto>> findByValueGreaterThan(@PathVariable BigDecimal value) {
+        return ResponseEntity.ok(produtoService.findByValueGreaterThan(value));
     }
 
     @GetMapping("/findall")

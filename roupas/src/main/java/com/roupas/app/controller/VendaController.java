@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,22 @@ public class VendaController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    // Endpoints de filtro
+    @GetMapping("/delivery-address/{deliveryAdress}")
+    public ResponseEntity<List<Venda>> findByDeliveryAdress(@PathVariable String deliveryAdress) {
+        return ResponseEntity.ok(vendaService.findByDeliveryAdress(deliveryAdress));
+    }
+
+    @GetMapping("/total-value/greater-than/{totalValue}")
+    public ResponseEntity<List<Venda>> findByTotalValueGreaterThan(@PathVariable BigDecimal totalValue) {
+        return ResponseEntity.ok(vendaService.findByTotalValueGreaterThan(totalValue));
+    }
+
+    @GetMapping("/total-value/between")
+    public ResponseEntity<List<Venda>> findByTotalValueBetween(@RequestParam BigDecimal minValue, @RequestParam BigDecimal maxValue) {
+        return ResponseEntity.ok(vendaService.findByTotalValueBetween(minValue, maxValue));
     }
 
     @GetMapping("/findall")

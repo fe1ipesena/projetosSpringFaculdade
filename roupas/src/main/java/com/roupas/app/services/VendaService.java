@@ -33,22 +33,22 @@ public class VendaService {
 
     public Venda save(Venda venda) {
 
-        // Garantir que os produtos estejam no estado "managed"
-        List<Produto> managedProducts = findProductsById(venda.getProdutos());
-        venda.setProdutos(managedProducts);
+        // garantindo que os produtos estejam no estado "managed"
+        List<Produto> managedProducts = findProductsById(venda.getProducts());
+        venda.setProducts(managedProducts);
 
-        // Garantir que o cliente e o funcionário estejam no estado "managed"
-        Cliente managedCliente = findClienteById(venda.getCliente().getId());
-        venda.setCliente(managedCliente);
+        // garantindo que o cliente e o funcionário estejam no estado "managed"
+        Cliente managedCliente = findClienteById(venda.getCustomer().getId());
+        venda.setCustomer(managedCliente);
 
-        Funcionario managedFuncionario = findFuncionarioById(venda.getFuncionario().getId());
-        venda.setFuncionario(managedFuncionario);
+        Funcionario managedFuncionario = findFuncionarioById(venda.getEmployee().getId());
+        venda.setEmployee(managedFuncionario);
 
-        // Calcular o valor total
+        // calculo do valor total
         BigDecimal totalValue = sumOfValues(managedProducts);
         venda.setTotalValue(totalValue);
 
-        // Persistir a venda
+        // aqui persiste a venda
         return vendaRepository.save(venda);
     }
 
@@ -88,7 +88,7 @@ public class VendaService {
     public List<Venda> findall() {
         List<Venda> vendas = vendaRepository.findAll();
         if (vendas.isEmpty()) {
-            throw new RuntimeException("Não há vendas registradas!");
+            throw new RuntimeException("Não há sales registradas!");
         } else {
             return vendas;
         }
@@ -101,6 +101,20 @@ public class VendaService {
         } else {
             throw new RuntimeException("Venda não encontrada com id " + id);
         }
+    }
+
+    //metodos de filtro automatico
+
+    public List<Venda> findByDeliveryAdress(String deliveryAdress) {
+        return vendaRepository.findByDeliveryAdress(deliveryAdress);
+    }
+
+    public List<Venda> findByTotalValueGreaterThan(BigDecimal totalValue) {
+        return vendaRepository.findByTotalValueGreaterThan(totalValue);
+    }
+
+    public List<Venda> findByTotalValueBetween(BigDecimal minValue, BigDecimal maxValue) {
+        return vendaRepository.findByTotalValueBetween(minValue, maxValue);
     }
 
     public void deleteById(long id) {
@@ -119,10 +133,10 @@ public class VendaService {
 
             // Atualizar os dados da venda existente
             existingVenda.setDeliveryAdress(venda.getDeliveryAdress());
-            existingVenda.setCliente(findClienteById(venda.getCliente().getId()));
-            existingVenda.setFuncionario(findFuncionarioById(venda.getFuncionario().getId()));
-            existingVenda.setProdutos(findProductsById(venda.getProdutos()));
-            existingVenda.setTotalValue(sumOfValues(existingVenda.getProdutos()));
+            existingVenda.setCustomer(findClienteById(venda.getCustomer().getId()));
+            existingVenda.setEmployee(findFuncionarioById(venda.getEmployee().getId()));
+            existingVenda.setProducts(findProductsById(venda.getProducts()));
+            existingVenda.setTotalValue(sumOfValues(existingVenda.getProducts()));
 
             // Salvar a venda atualizada
             vendaRepository.save(existingVenda);

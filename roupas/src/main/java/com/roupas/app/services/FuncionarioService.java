@@ -56,6 +56,19 @@ public class FuncionarioService {
         }
     }
 
+    // metodos de filtro automatico
+    public List<Funcionario> findByName(String name) {
+        return funcionarioRepository.findByName(name);
+    }
+
+    public List<Funcionario> findByRegistration(String registration) {
+        return funcionarioRepository.findByRegistration(registration);
+    }
+
+    public List<Funcionario> findByAgeGreaterThanEqual(int age) {
+        return funcionarioRepository.findByAgeGreaterThanEqual(age);
+    }
+
     public void deleteById(long id){
         if(funcionarioRepository.existsById(id)){
             funcionarioRepository.deleteById(id);

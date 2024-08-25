@@ -33,8 +33,8 @@ public class Produto {
     @NotNull(message = "O produto precisa ter um valor!")
     private BigDecimal value;
 
-    @ManyToMany(mappedBy = "produtos")
-    @JsonBackReference
-    List<Venda> vendas;
+    @ManyToMany(mappedBy = "products")
+    @JsonIgnore
+    List<Venda> sales;
 
 }

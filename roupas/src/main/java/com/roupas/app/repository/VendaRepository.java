@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface VendaRepository extends JpaRepository<Venda, Long> {
-    List<Venda> findByCliente(Cliente cliente);
+    List<Venda> findByCustomer(Cliente cliente);
 
     List<Venda> findByDeliveryAdress(String deliveryAdress);
     List<Venda> findByTotalValueGreaterThan(BigDecimal totalValue);
