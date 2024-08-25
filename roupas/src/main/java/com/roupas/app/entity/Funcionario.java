@@ -1,6 +1,9 @@
 package com.roupas.app.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -33,9 +36,11 @@ public class Funcionario {
 
                     //matricula do funcionario
     @NotBlank
+    @Column(unique = true) // funciona como uma 2 garantia para ser unico
     private String registration;
 
-    @OneToMany
-    private List<Venda> venda;
+    @OneToMany(mappedBy = "funcionario")
+    @JsonBackReference
+    private List<Venda> vendas;
 
 }

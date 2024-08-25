@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class FuncionarioService {
@@ -16,9 +17,26 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
 
     public String save(Funcionario funcionario){
+        funcionario.setRegistration(generateUniqueRegistrationNumber());
         funcionarioRepository.save(funcionario);
         return "Funcionario salvo com sucesso.";
     }
+
+    private String generateUniqueRegistrationNumber() {
+        String registrationNumber;
+        do {
+            registrationNumber = generateRegistrationNumber();
+        } while (funcionarioRepository.existsByRegistration(registrationNumber));
+        return registrationNumber;
+    }
+
+    private String generateRegistrationNumber() {
+        Random random = new Random();
+        int number = random.nextInt((int) Math.pow(10, 5));
+        String formattedNumber = String.format("%0" + 5 + "d", number);
+        return "RN" + formattedNumber;
+    }
+
 
     public List<Funcionario> findall(){
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
@@ -51,8 +69,6 @@ public class FuncionarioService {
                 .map(funcionario -> {
                     funcionario.setName(updatedFuncionario.getName());
                     funcionario.setAge(updatedFuncionario.getAge());
-                    funcionario.setRegistration(updatedFuncionario.getRegistration());
-                    funcionario.setVenda(updatedFuncionario.getVenda());
 
                     return funcionarioRepository.save(funcionario);
                 })

@@ -2,7 +2,9 @@ package com.roupas.app.services;
 
 
 import com.roupas.app.entity.Cliente;
+import com.roupas.app.entity.Venda;
 import com.roupas.app.repository.ClienteRepository;
+import com.roupas.app.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private VendaRepository vendaRepository;
 
     public String save(Cliente cliente){
         clienteRepository.save(cliente);
@@ -39,11 +44,18 @@ public class ClienteService {
     }
 
     public void deleteById(long id){
-        if(clienteRepository.existsById(id)){
-            clienteRepository.deleteById(id);
-        }else{
-            throw new RuntimeException("cliente nao encontrado com id "+id);
+        // verifica se o cliente existe
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id " + id));
+
+        // removendo todas as vendas associadas ao cliente
+        List<Venda> vendas = vendaRepository.findByCliente(cliente);
+        if (!vendas.isEmpty()) {
+            vendaRepository.deleteAll(vendas);
         }
+
+        // agora pode deletar o cliente
+        clienteRepository.deleteById(id);
     }
 
     public Cliente updateById(long id, Cliente updatedCliente){
@@ -53,7 +65,6 @@ public class ClienteService {
                     cliente.setCpf(updatedCliente.getCpf());
                     cliente.setAge(updatedCliente.getAge());
                     cliente.setPhone(updatedCliente.getPhone());
-                    cliente.setVenda(updatedCliente.getVenda());
 
                     return clienteRepository.save(cliente);
                 })

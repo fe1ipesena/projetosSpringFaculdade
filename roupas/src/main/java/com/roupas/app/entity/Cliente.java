@@ -1,5 +1,9 @@
 package com.roupas.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,7 +46,8 @@ public class Cliente {
     @NotBlank(message = "É preciso apresentar um telefone")
     private String phone;
 
-    @OneToMany
-    private List<Venda> venda;
+    @OneToMany(mappedBy = "cliente")
+    @JsonBackReference
+    private List<Venda> compras;
 
 }

@@ -1,7 +1,12 @@
 package com.roupas.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,21 +27,32 @@ public class Venda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "O endereço de entrega não pode estar vazio.")
     private String deliveryAdress;
 
-    @NotNull(message = "O valor total nao pode ser nulo.")
     private BigDecimal totalValue;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "cliente_id")
+    @NotNull(message = "O cliente não pode ser nulo.")
+    @JsonManagedReference
+    //@JsonIgnoreProperties("compras")
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "funcionario_id", nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "funcionario_id")
+    @NotNull(message = "O funcionário não pode ser nulo.")
+    //@JsonIgnoreProperties("vendas")
+    @JsonManagedReference
     private Funcionario funcionario;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "venda_id")
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "venda_produto",
+            joinColumns = @JoinColumn(name = "venda_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
+    //@JsonIgnoreProperties("vendas")
+    @JsonManagedReference
     private List<Produto> produtos;
-
 }

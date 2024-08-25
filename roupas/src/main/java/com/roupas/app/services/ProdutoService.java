@@ -52,7 +52,6 @@ public class ProdutoService {
                 .map(produto -> {
                     produto.setProduct(updatedProduto.getProduct());
                     produto.setValue(updatedProduto.getValue());
-                    produto.setVenda(updatedProduto.getVenda());
 
                     return produtoRepository.save(produto);
                 })
