@@ -4,10 +4,10 @@ Este repositório contém alguns dos meus projetos desenvolvidos durante a facul
 
 ## Conteúdo
 
-- **bibliotecaSpring**: Descrição breve do projeto 1.
-- **carsSpringboot**: Descrição breve do projeto 2.
-- **roupas**: Descrição breve do projeto 3.
-- **makeanapi**: Descrição breve do projeto 4.
+- **bibliotecaSpring**
+- **carsSpringboot**
+- **roupas**
+- **makeanapi**
 
 ## Tecnologias Utilizadas
 
